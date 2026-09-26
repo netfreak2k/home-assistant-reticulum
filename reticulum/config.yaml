@@ -1,0 +1,27 @@
+name: "Reticulum"
+version: "0.1.0"
+slug: "reticulum"
+description: "Run a Reticulum Network Stack node directly on Home Assistant."
+startup: "application"
+boot: "auto"
+init: false
+
+arch:
+  - amd64
+  - aarch64
+
+map:
+  - type: addon_config
+    read_only: false
+
+host_network: true
+
+options:
+  auto_interface: true
+  transport: false
+  loglevel: "info"
+
+schema:
+  auto_interface: "bool"
+  transport: "bool"
+  loglevel: "list(error|warning|notice|info|verbose|debug|path|extreme)"
