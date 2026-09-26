@@ -7,9 +7,17 @@ CONFIG_FILE="${CONFIG_DIR}/config"
 
 mkdir -p "${CONFIG_DIR}"
 
-AUTO_INTERFACE="$(bashio::config 'auto_interface')"
-TRANSPORT="$(bashio::config 'transport')"
-LOGLEVEL="$(bashio::config 'loglevel')"
+# Home Assistant options.
+# During standalone Docker development no Supervisor API exists,
+# therefore use safe defaults.
+
+AUTO_INTERFACE="$(bashio::config 'auto_interface' 2>/dev/null || true)"
+TRANSPORT="$(bashio::config 'transport' 2>/dev/null || true)"
+LOGLEVEL="$(bashio::config 'loglevel' 2>/dev/null || true)"
+
+[ -n "${AUTO_INTERFACE}" ] || AUTO_INTERFACE="true"
+[ -n "${TRANSPORT}" ] || TRANSPORT="false"
+[ -n "${LOGLEVEL}" ] || LOGLEVEL="info"
 
 case "${LOGLEVEL}" in
     error)   RNS_LOGLEVEL=1 ;;

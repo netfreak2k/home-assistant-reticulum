@@ -15,7 +15,10 @@ RUN python3 -m pip install \
 
 COPY rootfs /
 
-RUN chmod +x /etc/services.d/reticulum/run
+RUN chmod +x \
+    /etc/services.d/reticulum/run \
+    /etc/services.d/reticulum-web/run \
+    /opt/reticulum-web/server.py
 
 LABEL \
     io.hass.name="Reticulum" \
