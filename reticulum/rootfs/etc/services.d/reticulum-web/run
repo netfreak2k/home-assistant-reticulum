@@ -1,0 +1,24 @@
+#!/usr/bin/with-contenv bashio
+
+set -e
+
+bashio::log.info "Starting Reticulum Web UI on port 8100"
+
+bashio::log.info "Installing Home Assistant Reticulum bridge"
+
+mkdir -p \
+    /homeassistant/custom_components/reticulum \
+    /homeassistant/reticulum_bridge
+
+rm -f \
+    /homeassistant/custom_components/reticulum/llm.py
+
+cp -f \
+    /opt/reticulum-ha/custom_components/reticulum/* \
+    /homeassistant/custom_components/reticulum/
+
+
+# Kurz warten, damit rnsd zuerst hochkommen kann
+sleep 3
+
+exec python3 /opt/reticulum-web/server.py

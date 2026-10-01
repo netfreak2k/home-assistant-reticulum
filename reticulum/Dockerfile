@@ -11,11 +11,18 @@ RUN apk add --no-cache \
 RUN python3 -m pip install \
     --no-cache-dir \
     --break-system-packages \
-    rns
+    rns==1.5.4 \
+    lxmf==1.1.1 \
+    qrcode==7.4.2
 
 COPY rootfs /
 
-RUN chmod +x /etc/services.d/reticulum/run
+RUN chmod +x \
+    /etc/services.d/reticulum/run \
+    /etc/services.d/reticulum-web/run \
+    /etc/services.d/reticulum-node/run \
+    /opt/reticulum-web/server.py \
+    /opt/reticulum-node/node.py
 
 LABEL \
     io.hass.name="Reticulum" \
