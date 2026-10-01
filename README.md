@@ -1,91 +1,281 @@
-# Reticulum for Home Assistant
+# N2K RNS Gateway for Home Assistant
 
-Run the **Reticulum Network Stack (RNS)** directly on Home Assistant.
+N2K RNS Gateway connects Home Assistant with the Reticulum Network Stack
+and LXMF messaging.
 
-This project provides a Home Assistant add-on for running a persistent Reticulum node without requiring a separate Raspberry Pi, server or additional Linux installation.
+This repository contains the current public beta build.
 
-## Features
+## Current status
 
-- Reticulum Network Stack (RNS)
-- Runs `rnsd` directly inside Home Assistant
-- Persistent Reticulum configuration and storage
+**1.22.0-beta1 · Public beta baseline**
+
+The beta baseline has passed functional validation, update testing and a clean-install test on a second Home Assistant system.
+
+Verified:
+
+- Add-on restart
+- Persistent Reticulum identity
+- Persistent contacts
+- Reticulum stack availability
+- LXMF send
+- Delivery status
+- Retry workflow
+- Integrated system self-test
+- Privacy-safe diagnostic export
+- Contact QR code generation through Home Assistant Ingress
+- Clean installation on a second Home Assistant system
+
+Not yet physically validated:
+
+- Physical RNode USB disconnect
+- Physical RNode USB reconnect
+- Automatic recovery after a physical reconnect
+
+These hardware reconnect tests remain explicitly unverified and do not block
+continued software beta testing.
+
+## For beta testers — 60 seconds
+
+1. Open Home Assistant.
+2. Go to:
+
+   Settings → Add-ons → Add-on Store → ⋮ → Repositories
+
+3. Add:
+
+   https://github.com/netfreak2k/home-assistant-reticulum
+
+4. Install **N2K RNS Gateway**.
+5. Start the add-on.
+6. Open its Web UI.
+7. Go to:
+
+   Messenger → Einstellungen → Systemcheck → Prüfen
+
+8. If all required checks show **PASS**, the basic installation is working.
+
+### First test
+
+After installation:
+
+1. Confirm the Reticulum node shows online.
+2. Open Messenger.
+3. Add or select a known LXMF contact.
+4. Send a short test message.
+5. Check that delivery state updates.
+6. Run the Systemcheck again.
+
+### If something fails
+
+Before reporting a problem:
+
+1. Run the Systemcheck.
+2. Open:
+
+   Messenger → Einstellungen
+
+3. Use:
+
+   **Diagnose exportieren**
+
+4. Include the generated JSON file with the bug report if appropriate.
+
+Do not publish:
+
+- passwords
+- access tokens
+- API keys
+- private Home Assistant URLs
+- private network credentials
+
+The diagnostic export is designed not to contain message bodies or contact
+names, but users should still review files before publishing them publicly.
+
+## Main features
+
+- Reticulum Network Stack integration
+- LXMF messaging
+- Persistent local identity
+- Contact management
+- Local aliases
+- Contact QR codes
+- Contact import/export
+- Delivery state and timestamps
+- Retry workflow
+- Peer reachability information
+- Reticulum path visibility
+- Hop information
+- Transport/interface information
+- Queue/path warnings
+- TCP interface support
 - AutoInterface support
-- Optional Reticulum Transport mode
-- Configurable logging
-- Automatic startup with Home Assistant
-- Configuration survives add-on and Home Assistant restarts
-- Home Assistant OS tested
-- `amd64` support
-- `aarch64` support
+- RNode / serial support
+- Home Assistant Ingress UI
+- Integrated system self-test
+- Privacy-conscious support diagnostic export
+
+## Documentation
+
+- [User guide](docs/USER_GUIDE.md)
+- [Third-party notices](THIRD_PARTY_NOTICES.md)
+- [Project license](LICENSE)
+
+The integrated **About** section in the add-on also identifies the project,
+developer, Reticulum/LXMF relationship and licensing references.
+
+## Requirements
+
+
+- Home Assistant OS or another Home Assistant installation with add-on support
+- Supported architecture:
+  - amd64
+  - aarch64
+- Network access appropriate for the Reticulum interfaces you configure
+- Optional RNode-compatible serial hardware for LoRa operation
 
 ## Installation
 
-Add this repository to the Home Assistant App/Add-on Store:
+1. Open Home Assistant.
+2. Go to:
 
-`https://github.com/netfreak2k/home-assistant-reticulum`
+   Settings → Add-ons → Add-on Store
 
-Then:
+3. Open:
 
-1. Open **Settings → Apps / Add-ons → Store**
-2. Open **Repositories**
-3. Add the repository URL above
-4. Find **Reticulum**
-5. Install and start the add-on
+   ⋮ → Repositories
 
-## Default configuration
+4. Add:
 
-The add-on starts with:
+   https://github.com/netfreak2k/home-assistant-reticulum
 
-- AutoInterface: enabled
-- Transport mode: disabled
-- Log level: info
+5. Install **N2K RNS Gateway**.
+6. Configure the required interfaces.
+7. Start the add-on.
+8. Open the add-on Web UI.
+9. Run:
 
-Reticulum configuration and runtime data are stored persistently and survive add-on and Home Assistant restarts.
+   Messenger → Einstellungen → Systemcheck → Prüfen
 
-Advanced users can extend the Reticulum configuration with additional interfaces and settings.
+A successful installation should show a PASS result for the required software
+checks.
 
-## Current Status
+## Basic configuration
 
-### v0.1.0
+The add-on supports:
 
-First stable release.
-
-Successfully tested with:
-
-- Home Assistant OS
-- Installation from GitHub
-- `rnsd` startup
 - AutoInterface
-- Persistent configuration
-- Add-on restart
-- Home Assistant restart
-- Automatic Reticulum startup
+- TCP interfaces
+- Internet bootstrap
+- RNode / serial interfaces
+- Reticulum transport mode
+- Configurable LXMF messenger name
 
-## Planned
+For RNode use, configure the serial port and radio parameters according to
+your hardware and local frequency regulations.
 
-Future versions are planned to include:
+## Data persistence
 
-- Home Assistant Ingress web interface
-- `rnstatus` dashboard
-- Interface status
-- Peer information
-- Traffic statistics
-- Easier TCP interface configuration
-- RNode / serial interface support
-- Additional Reticulum diagnostics
+The add-on stores its Reticulum/LXMF state under the Home Assistant
+configuration storage used by the add-on.
 
-## Reticulum
+The persistent state includes the Reticulum identity and local messenger data.
 
-Reticulum is a cryptography-based networking stack designed for resilient communication across many different types of physical and virtual network interfaces.
+Do not delete persistent Reticulum data unless you intentionally want to
+create a new network identity.
 
-This project packages Reticulum for convenient use inside Home Assistant.
+## Diagnostics
 
-## License
+The Web UI contains an integrated system check covering:
 
-MIT License
+- Persistent identity
+- Contact storage
+- LXMF inbox
+- LXMF outbox
+- Reticulum stack
+- RNode / serial state
 
-## Maintainer
+A support diagnostic JSON file can also be exported from the settings page.
+
+The diagnostic export is designed not to include:
+
+- message contents
+- contact names
+- message history
+- passwords
+- access tokens
+
+Identity hashes are shortened/redacted in the support export.
+
+## Beta limitations
+
+This is beta software.
+
+Expected limitations include:
+
+- behaviour can still change between development releases
+- edge cases with unusual Reticulum network configurations may not yet be
+  covered
+- physical RNode USB disconnect/reconnect recovery has not yet been validated
+  on site
+- the project is not an official Home Assistant, Reticulum or LXMF product
+
+Please keep a working backup before testing new development versions.
+
+## Reporting problems
+
+When reporting a problem, include:
+
+- N2K RNS Gateway version
+- Home Assistant version
+- hardware architecture
+- configured Reticulum interface type
+- Systemcheck result
+- exported diagnostic JSON if relevant
+- a short description of what happened
+
+Do not publish passwords, API tokens or other private credentials.
+
+## Development policy
+
+The project is currently under feature freeze for beta stabilization.
+
+Allowed changes:
+
+- bug fixes
+- compatibility fixes
+- stability improvements
+- diagnostics
+- documentation
+- licensing corrections
+
+Major UI redesigns and protocol architecture changes are postponed until the
+beta baseline is considered stable.
+
+## Licensing
+
+N2K RNS Gateway contains original Netfreak2k code and third-party software.
+
+See:
+
+- `LICENSE`
+- `THIRD_PARTY_NOTICES.md`
+
+Reticulum and LXMF are independent third-party projects and are not owned or
+maintained by Netfreak2k.
+
+This project is not an official Home Assistant add-on and no affiliation,
+sponsorship or endorsement by Home Assistant, Reticulum or LXMF is implied.
+
+## Project
+
+Developer:
 
 **Netfreak2k**
 
-Project: `home-assistant-reticulum`
+Project:
+
+**N2K RNS Gateway**
+
+Development repository:
+
+https://github.com/netfreak2k/home-assistant-reticulum
