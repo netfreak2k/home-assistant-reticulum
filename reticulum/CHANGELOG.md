@@ -10,7 +10,7 @@
 - Persistent identity, contacts, Home Assistant ingress, diagnostics, backup/restore and Store & Forward support.
 - Tested through normal update/restart workflow before public beta promotion.
 
-## 1.22.0-beta1
+## 1.21.46-beta1
 
 - Scale the unified Messenger for desktop canvases without changing the mobile layout.
 - Increase chat name, preview, metadata and open-conversation text sizes on desktop.
